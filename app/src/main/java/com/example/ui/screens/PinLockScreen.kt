@@ -86,7 +86,7 @@ fun PinLockScreen(
       )
       Spacer(modifier = Modifier.height(4.dp))
       Text(
-        text = if (isError) "Incorrect PIN. Please retry." else "Enter PIN (Default: 2121) or tap Biometrics",
+        text = if (isError) "Hatalı PIN. Lütfen tekrar deneyin." else "PIN Kodunu Girin (Varsayılan: 2121) veya Biyometriyi Kullanın",
         color = if (isError) StatusError else Color.Gray,
         fontSize = 13.sp
       )
@@ -152,7 +152,7 @@ fun PinLockScreen(
           )
           Spacer(modifier = Modifier.width(8.dp))
           Text(
-            text = "Tap to Unlock with Biometrics",
+            text = "Biyometrik ile Kilidi Aç (Parmak İzi / Yüz)",
             color = StatusSuccess,
             fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold

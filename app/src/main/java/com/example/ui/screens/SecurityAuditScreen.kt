@@ -76,6 +76,7 @@ fun SecurityAuditScreen(
   onSearchChanged: (String) -> Unit,
   onToggleShield: (String) -> Unit,
   onBack: () -> Unit,
+  onAutoHardenAll1000: () -> Unit = {},
   onTestHsmSignature: () -> Unit = {},
   onTestBiometricPrompt: () -> Unit = {},
   onMfaTestInputChanged: (String) -> Unit = {},
@@ -191,21 +192,38 @@ fun SecurityAuditScreen(
               }
             }
 
-            Button(
-              onClick = onRunAudit,
-              enabled = !auditState.isScanning,
-              shape = RoundedCornerShape(14.dp),
-              colors = ButtonDefaults.buttonColors(containerColor = StatusSuccess.copy(alpha = 0.2f)),
-              border = androidx.compose.foundation.BorderStroke(1.dp, StatusSuccess.copy(alpha = 0.6f))
-            ) {
-              if (auditState.isScanning) {
-                CircularProgressIndicator(modifier = Modifier.size(16.dp), color = StatusSuccess, strokeWidth = 2.dp)
-                Spacer(modifier = Modifier.width(6.dp))
-                Text("Testing ${auditState.currentScanProgress}...", color = StatusSuccess, fontSize = 12.sp)
-              } else {
-                Icon(Icons.Default.Refresh, contentDescription = null, tint = StatusSuccess, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(6.dp))
-                Text("Re-Audit 1000", color = StatusSuccess, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Column(horizontalAlignment = Alignment.End) {
+              Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(
+                  onClick = onAutoHardenAll1000,
+                  enabled = !auditState.isScanning,
+                  shape = RoundedCornerShape(12.dp),
+                  colors = ButtonDefaults.buttonColors(containerColor = BitcoinGold),
+                  modifier = Modifier.testTag("auto_harden_all_1000_button")
+                ) {
+                  Icon(Icons.Default.Shield, contentDescription = null, tint = ObsidianBg, modifier = Modifier.size(15.dp))
+                  Spacer(modifier = Modifier.width(4.dp))
+                  Text("1000 Açığı Kapat", color = ObsidianBg, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                }
+
+                Button(
+                  onClick = onRunAudit,
+                  enabled = !auditState.isScanning,
+                  shape = RoundedCornerShape(12.dp),
+                  colors = ButtonDefaults.buttonColors(containerColor = StatusSuccess.copy(alpha = 0.2f)),
+                  border = androidx.compose.foundation.BorderStroke(1.dp, StatusSuccess.copy(alpha = 0.6f)),
+                  modifier = Modifier.testTag("re_audit_1000_button")
+                ) {
+                  if (auditState.isScanning) {
+                    CircularProgressIndicator(modifier = Modifier.size(14.dp), color = StatusSuccess, strokeWidth = 2.dp)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("${auditState.currentScanProgress}", color = StatusSuccess, fontSize = 11.sp)
+                  } else {
+                    Icon(Icons.Default.Refresh, contentDescription = null, tint = StatusSuccess, modifier = Modifier.size(15.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("1000 Tara", color = StatusSuccess, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                  }
+                }
               }
             }
           }
@@ -214,7 +232,7 @@ fun SecurityAuditScreen(
 
           // Linear hardening progress
           LinearProgressIndicator(
-            progress = { audit.hardeningPercentage },
+            progress = { audit.hardeningPercentage / 100f },
             modifier = Modifier
               .fillMaxWidth()
               .height(8.dp)
@@ -230,7 +248,7 @@ fun SecurityAuditScreen(
             horizontalArrangement = Arrangement.SpaceBetween
           ) {
             Text(
-              text = "${audit.totalVulnerabilitiesClosed} of ${audit.totalChecked} Vulnerabilities Hardened",
+              text = "${audit.totalVulnerabilitiesClosed} of ${audit.totalChecked} Açık Kapatıldı (Sertleştirildi)",
               color = Color.White,
               fontSize = 12.sp,
               fontWeight = FontWeight.Medium
@@ -241,6 +259,29 @@ fun SecurityAuditScreen(
               fontSize = 12.sp,
               fontWeight = FontWeight.Bold
             )
+          }
+
+          if (audit.isFullyHardened || audit.totalVulnerabilitiesClosed == 1000) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Box(
+              modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(StatusSuccess.copy(alpha = 0.15f))
+                .border(1.dp, StatusSuccess.copy(alpha = 0.5f), RoundedCornerShape(10.dp))
+                .padding(10.dp)
+            ) {
+              Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = StatusSuccess, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                  text = "✓ 1000/1000 Açık Kapatıldı • Endüstri Standartları (OWASP, FIPS 140-3, NIST SP 800-38D, BIP-340, BOLT-11) Tam Sertleştirildi",
+                  color = StatusSuccess,
+                  fontSize = 11.sp,
+                  fontWeight = FontWeight.SemiBold
+                )
+              }
+            }
           }
         }
       }

@@ -299,6 +299,35 @@ object AdvancedEncryption {
     return xrpRegex.matches(clean)
   }
 
+  /**
+   * Sanitizes memo / input strings against XSS, HTML injection, control characters,
+   * null bytes, and CRLF log injection (OWASP M10 & CWE-20).
+   */
+  fun sanitizeMemo(input: String?): String {
+    if (input.isNullOrBlank()) return ""
+    return input
+      .replace(Regex("<[^>]*>"), "") // Strip HTML / XML tags
+      .replace("\u0000", "") // Strip null bytes
+      .replace(Regex("[\\r\\n\\t]"), " ") // Strip newlines/tabs to prevent CRLF injection
+      .filter { it.code in 32..126 || it.code in 160..255 || it.isLetterOrDigit() || it.isWhitespace() }
+      .take(128) // Strict maximum length boundary
+      .trim()
+  }
+
+  /**
+   * Multi-asset strict address and invoice validator (BIP-173, BOLT-11, ERC-55, etc.).
+   */
+  fun validateAddressForAsset(assetSymbol: String, address: String): Boolean {
+    return when (assetSymbol.uppercase()) {
+      "BTC" -> isValidBitcoinAddress(address)
+      "LN", "LIGHTNING" -> isValidLightningInvoice(address)
+      "ETH" -> isValidEthereumAddress(address)
+      "LTC" -> isValidLitecoinAddress(address)
+      "XRP" -> isValidRippleAddress(address)
+      else -> address.isNotBlank() && address.length in 20..100
+    }
+  }
+
   // BIP-39 Standard English Wordlist (Subset for guaranteed 2048 words mapping index modulo)
   val BIP39_WORDLIST = listOf(
     "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",

@@ -217,7 +217,7 @@ class SatoshiWalletViewModel(application: Application) : AndroidViewModel(applic
   }
 
   fun updateSendMemo(value: String) {
-    _sendState.value = _sendState.value.copy(memo = value)
+    _sendState.value = _sendState.value.copy(memo = AdvancedEncryption.sanitizeMemo(value))
   }
 
   fun updateSendNetwork(network: NetworkType) {
@@ -235,13 +235,26 @@ class SatoshiWalletViewModel(application: Application) : AndroidViewModel(applic
   fun requestSendConfirmation() {
     val state = _sendState.value
     val amountNum = state.amountInput.toDoubleOrNull() ?: 0.0
-    if (amountNum <= 0.0) {
-      _sendState.value = state.copy(errorMessage = "Please enter a valid transfer amount.")
+    if (amountNum <= 0.0 || amountNum.isNaN() || amountNum.isInfinite()) {
+      _sendState.value = state.copy(errorMessage = "Please enter a valid positive transfer amount.")
       return
     }
     if (state.recipient.isBlank()) {
       _sendState.value = state.copy(errorMessage = "Recipient address is required.")
       return
+    }
+
+    if (walletState.value.securitySettings.isStrictBech32ValidationEnabled) {
+      val isValidAddress = AdvancedEncryption.validateAddressForAsset(
+        state.selectedAsset.symbol,
+        state.recipient.trim()
+      )
+      if (!isValidAddress) {
+        _sendState.value = state.copy(
+          errorMessage = "Invalid address format for ${state.selectedAsset.displayName} (${state.selectedAsset.symbol}). Verification failed."
+        )
+        return
+      }
     }
 
     if (walletState.value.securitySettings.requireMfaForSend) {
@@ -493,6 +506,18 @@ class SatoshiWalletViewModel(application: Application) : AndroidViewModel(applic
         _auditState.value = _auditState.value.copy(currentScanProgress = step * 100)
       }
       repository.runAudit()
+      _auditState.value = _auditState.value.copy(isScanning = false, currentScanProgress = 1000)
+    }
+  }
+
+  fun autoHardenAndCloseAllVulnerabilities() {
+    _auditState.value = _auditState.value.copy(isScanning = true, currentScanProgress = 0)
+    viewModelScope.launch {
+      for (step in 1..10) {
+        delay(40)
+        _auditState.value = _auditState.value.copy(currentScanProgress = step * 100)
+      }
+      repository.autoHardenAndCloseAll1000Vulnerabilities()
       _auditState.value = _auditState.value.copy(isScanning = false, currentScanProgress = 1000)
     }
   }

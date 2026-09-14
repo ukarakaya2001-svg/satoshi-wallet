@@ -121,13 +121,13 @@ fun ReceiveScreen(
       Spacer(modifier = Modifier.width(12.dp))
       Column {
         Text(
-          text = "Receive Crypto",
+          text = "Kripto Ödeme Al",
           color = Color.White,
           fontSize = 20.sp,
           fontWeight = FontWeight.Bold
         )
         Text(
-          text = "Hardware-Derived Addresses • Zero-Knowledge Validated",
+          text = "Donanım Korumalı Adresler • Anında QR Kod",
           color = Color.Gray,
           fontSize = 11.sp
         )
@@ -138,7 +138,7 @@ fun ReceiveScreen(
 
     // Multi-Asset Selector Bar
     Text(
-      text = "SELECT CURRENCY TO RECEIVE",
+      text = "ALMAK İSTEDİĞİNİZ VARLIĞI SEÇİN",
       color = Color.Gray,
       fontSize = 11.sp,
       fontWeight = FontWeight.SemiBold,
@@ -229,7 +229,7 @@ fun ReceiveScreen(
           )
           Spacer(modifier = Modifier.width(6.dp))
           Text(
-            text = if (receiveState.isCopied) "Copied to Clipboard!" else "Tap to Copy Address",
+            text = if (receiveState.isCopied) "Panoya Kopyalandı! ✓" else "Adresi Kopyalamak İçin Dokunun",
             color = if (receiveState.isCopied) StatusSuccess else BitcoinGold,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold

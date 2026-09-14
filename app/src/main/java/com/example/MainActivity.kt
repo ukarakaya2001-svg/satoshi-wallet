@@ -212,6 +212,7 @@ class MainActivity : FragmentActivity() {
                   walletState = walletState,
                   auditState = auditState,
                   onRunAudit = { viewModel.runComprehensiveSecurityAudit() },
+                  onAutoHardenAll1000 = { viewModel.autoHardenAndCloseAllVulnerabilities() },
                   onSelectDomain = { viewModel.selectAuditDomain(it) },
                   onSearchChanged = { viewModel.updateAuditSearch(it) },
                   onToggleShield = { viewModel.toggleSecuritySetting(it) },
@@ -286,7 +287,7 @@ fun SatoshiBottomNav(
           modifier = Modifier.size(22.dp)
         )
       },
-      label = { Text("Wallet", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
+      label = { Text("Cüzdan", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
       colors = NavigationBarItemDefaults.colors(
         selectedIconColor = BitcoinGold,
         selectedTextColor = BitcoinGold,
@@ -303,11 +304,11 @@ fun SatoshiBottomNav(
       icon = {
         Icon(
           imageVector = Icons.Default.ArrowUpward,
-          contentDescription = "Send",
+          contentDescription = "Gönder",
           modifier = Modifier.size(22.dp)
         )
       },
-      label = { Text("Send", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
+      label = { Text("Gönder", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
       colors = NavigationBarItemDefaults.colors(
         selectedIconColor = BitcoinGold,
         selectedTextColor = BitcoinGold,
@@ -324,11 +325,11 @@ fun SatoshiBottomNav(
       icon = {
         Icon(
           imageVector = Icons.Default.ArrowDownward,
-          contentDescription = "Receive",
+          contentDescription = "Al",
           modifier = Modifier.size(22.dp)
         )
       },
-      label = { Text("Receive", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
+      label = { Text("Al", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
       colors = NavigationBarItemDefaults.colors(
         selectedIconColor = StatusSuccess,
         selectedTextColor = StatusSuccess,
@@ -366,11 +367,11 @@ fun SatoshiBottomNav(
       icon = {
         Icon(
           imageVector = Icons.Default.CloudDone,
-          contentDescription = "Backup",
+          contentDescription = "Yedekle",
           modifier = Modifier.size(22.dp)
         )
       },
-      label = { Text("Backup", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
+      label = { Text("Yedekle", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
       colors = NavigationBarItemDefaults.colors(
         selectedIconColor = Color(0xFFBB86FC),
         selectedTextColor = Color(0xFFBB86FC),
@@ -387,11 +388,11 @@ fun SatoshiBottomNav(
       icon = {
         Icon(
           imageVector = Icons.Default.Security,
-          contentDescription = "Audit",
+          contentDescription = "Güvenlik",
           modifier = Modifier.size(22.dp)
         )
       },
-      label = { Text("Audit & HSM", fontSize = 10.sp, fontWeight = FontWeight.SemiBold) },
+      label = { Text("Güvenlik", fontSize = 11.sp, fontWeight = FontWeight.SemiBold) },
       colors = NavigationBarItemDefaults.colors(
         selectedIconColor = StatusSuccess,
         selectedTextColor = StatusSuccess,

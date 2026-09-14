@@ -121,13 +121,13 @@ fun SendScreen(
       Spacer(modifier = Modifier.width(12.dp))
       Column {
         Text(
-          text = "Send Crypto Payment",
+          text = "Kripto Ödeme Gönder",
           color = Color.White,
           fontSize = 20.sp,
           fontWeight = FontWeight.Bold
         )
         Text(
-          text = "Protected with Hardware Security Module (HSM) & MFA",
+          text = "Donanım Güvenlik Modülü (HSM) ve MFA Korumalı",
           color = Color.Gray,
           fontSize = 11.sp
         )
@@ -138,7 +138,7 @@ fun SendScreen(
 
     // Multi-Asset Selector Bar
     Text(
-      text = "SELECT ASSET TO SEND",
+      text = "GÖNDERİLECEK KRİPTO VARLIĞI SEÇİN",
       color = Color.Gray,
       fontSize = 11.sp,
       fontWeight = FontWeight.SemiBold,
@@ -169,7 +169,7 @@ fun SendScreen(
         verticalAlignment = Alignment.CenterVertically
       ) {
         Column {
-          Text(text = "Available Balance", color = Color.Gray, fontSize = 12.sp)
+          Text(text = "Kullanılabilir Bakiye", color = Color.Gray, fontSize = 12.sp)
           Spacer(modifier = Modifier.height(2.dp))
           Text(
             text = balanceText,
@@ -191,7 +191,7 @@ fun SendScreen(
 
     // Recipient Address Input
     Text(
-      text = "RECIPIENT ADDRESS / INVOICE",
+      text = "ALICI CÜZDAN ADRESİ / FATURA",
       color = Color.Gray,
       fontSize = 11.sp,
       fontWeight = FontWeight.SemiBold,
@@ -203,11 +203,11 @@ fun SendScreen(
       onValueChange = onRecipientChanged,
       placeholder = {
         val hint = when (currentAsset) {
-          CryptoAsset.BTC -> "Paste bc1q, bc1p, or 1/3 address..."
-          CryptoAsset.LIGHTNING -> "Paste Lightning BOLT-11 invoice (lnbc...)"
-          CryptoAsset.ETH -> "Paste Ethereum address (0x...)"
-          CryptoAsset.LTC -> "Paste Litecoin address (ltc1...)"
-          CryptoAsset.XRP -> "Paste Ripple XRP address (r...)"
+          CryptoAsset.BTC -> "bc1q, bc1p veya 1/3 adresi yapıştırın..."
+          CryptoAsset.LIGHTNING -> "Lightning faturası (lnbc...) yapıştırın"
+          CryptoAsset.ETH -> "Ethereum adresi (0x...) yapıştırın"
+          CryptoAsset.LTC -> "Litecoin adresi (ltc1...) yapıştırın"
+          CryptoAsset.XRP -> "Ripple XRP adresi (r...) yapıştırın"
         }
         Text(hint, color = Color.DarkGray, fontSize = 13.sp)
       },
@@ -244,7 +244,7 @@ fun SendScreen(
 
     // Amount Input
     Text(
-      text = "AMOUNT (${currentAsset.symbol})",
+      text = "TUTAR (${currentAsset.symbol})",
       color = Color.Gray,
       fontSize = 11.sp,
       fontWeight = FontWeight.SemiBold,
@@ -256,10 +256,10 @@ fun SendScreen(
       onValueChange = onAmountChanged,
       placeholder = {
         val hint = when (currentAsset) {
-          CryptoAsset.BTC, CryptoAsset.LIGHTNING -> "e.g. 50000"
-          CryptoAsset.ETH -> "e.g. 0.15"
-          CryptoAsset.LTC -> "e.g. 2.5"
-          CryptoAsset.XRP -> "e.g. 100.0"
+          CryptoAsset.BTC, CryptoAsset.LIGHTNING -> "Örn: 50000"
+          CryptoAsset.ETH -> "Örn: 0.15"
+          CryptoAsset.LTC -> "Örn: 2.5"
+          CryptoAsset.XRP -> "Örn: 100.0"
         }
         Text(hint, color = Color.DarkGray, fontSize = 14.sp)
       },
@@ -276,7 +276,7 @@ fun SendScreen(
           }
           onAmountChanged(maxStr)
         }) {
-          Text("MAX", color = BitcoinGold, fontWeight = FontWeight.Bold)
+          Text("MAKS", color = BitcoinGold, fontWeight = FontWeight.Bold)
         }
       },
       modifier = Modifier
@@ -296,7 +296,7 @@ fun SendScreen(
 
     // Memo Input
     Text(
-      text = "TRANSACTION MEMO / NOTE (OPTIONAL)",
+      text = "İŞLEM NOTU / AÇIKLAMA (İSTEĞE BAĞLI)",
       color = Color.Gray,
       fontSize = 11.sp,
       fontWeight = FontWeight.SemiBold,
@@ -306,7 +306,7 @@ fun SendScreen(
     OutlinedTextField(
       value = sendState.memo,
       onValueChange = onMemoChanged,
-      placeholder = { Text("Encrypted memo stored in local vault...", color = Color.DarkGray, fontSize = 13.sp) },
+      placeholder = { Text("Cihaz içi şifreli kasa notu...", color = Color.DarkGray, fontSize = 13.sp) },
       shape = RoundedCornerShape(14.dp),
       modifier = Modifier
         .fillMaxWidth()
@@ -409,11 +409,11 @@ fun SendScreen(
       if (sendState.isLoading) {
         CircularProgressIndicator(modifier = Modifier.size(22.dp), color = Color.Black, strokeWidth = 2.dp)
         Spacer(modifier = Modifier.width(10.dp))
-        Text("Signing with HSM Silicon...", fontWeight = FontWeight.Bold)
+        Text("Donanım Çipiyle (HSM) İmzalanıyor...", fontWeight = FontWeight.Bold)
       } else {
         Icon(Icons.Default.Security, contentDescription = null, modifier = Modifier.size(18.dp))
         Spacer(modifier = Modifier.width(8.dp))
-        Text("Review & Send Payment", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+        Text("Ödemeyi İncele ve Gönder", fontWeight = FontWeight.Bold, fontSize = 15.sp)
       }
     }
   }
