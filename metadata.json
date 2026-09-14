@@ -1,0 +1,6 @@
+{
+  "name": "Satoshi Wallet",
+  "description": "Enterprise-grade cryptocurrency wallet supporting Bitcoin, Lightning Network, Ethereum, Litecoin, and Ripple with androidx.biometric authentication (fingerprint/face unlock), multi-factor authentication (MFA), StrongBox HSM hardware signing, AES-256-GCM cloud backup, and a 1,000-point security audit engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
